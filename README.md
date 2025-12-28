@@ -8,11 +8,12 @@ TimeGuardian (GuardianTime) é um sistema de controle de tempo de uso para Ubunt
 - **Monitoramento de tempo real:** A cada 60 segundos, checa:
   - Se está dentro da janela de horários permitida (`allowed_window`).
   - Se o usuário está ativo (idle < 5 min usando `xprintidle`).
-  - Registra tempo usado no dia e avisa com `notify-send` ao restar 5 ou 2 minutos.
+  - Registra tempo usado no dia (persistente entre reinicializações, salvo em `/var/lib/guardiantime/state.json`) e avisa com `notify-send` ao restar 5 ou 2 minutos.
   - Encerra a sessão com `loginctl terminate-user` ao atingir o limite.
 - **Configuração e logs:**
   - Configurações em `/etc/guardiantime/config.json` (exemplo abaixo).
   - Logs em `/var/log/guardiantime.log`.
+  - O tempo usado no dia é persistido entre reinicializações em `/var/lib/guardiantime/state.json`.
 
 ## Arquivo de configuração (`/etc/guardiantime/config.json`)
 

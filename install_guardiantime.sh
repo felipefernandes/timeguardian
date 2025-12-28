@@ -1,17 +1,32 @@
 #!/usr/bin/env bash
 set -e
 
+# Verifica root
+if [[ $EUID -ne 0 ]]; then
+   echo "Este script deve ser executado como root (use sudo)."
+   exit 1
+fi
+
 # =============== CONFIGURÁVEIS ==================
 SRC_DIR="$(pwd)"  # Diretório atual com os arquivos
 TARGET_USER="${TARGET_USER:-usuarioalvo}" # Você pode definir export TARGET_USER=meuuser antes
 # ===============================================
 
+# Valida usuário alvo
+if ! id "$TARGET_USER" &>/dev/null; then
+    echo "Erro: O utilizador $TARGET_USER não existe."
+    exit 1
+fi
+
 echo "Instalando dependências do Ubuntu (será solicitado sudo)..."
 sudo apt update
-sudo apt install -y python3 python3-pip xprintidle libnotify-bin
+sudo apt install -y python3 python3-pip python3-requests xprintidle libnotify-bin
 
 echo "Preparando diretórios e arquivos de configuração..."
 sudo mkdir -p /etc/guardiantime
+sudo mkdir -p /var/lib/guardiantime
+sudo chown root:root /var/lib/guardiantime
+sudo chmod 700 /var/lib/guardiantime
 
 echo "Copiando arquivos do GuardianTime..."
 sudo cp "$SRC_DIR/guardiantime.py" /usr/local/bin/

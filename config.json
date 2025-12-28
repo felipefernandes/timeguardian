@@ -1,0 +1,4 @@
+{
+  "allowed_window": ["09:00", "19:00"],
+  "daily_limit_minutes": 600
+}
